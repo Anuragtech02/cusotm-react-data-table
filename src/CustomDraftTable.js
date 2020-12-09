@@ -114,7 +114,7 @@ const cols = [
   "igReel",
 ];
 
-const App = () => {
+const CustomDraftTable = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [loading, setLoading] = useState(true);
@@ -334,11 +334,11 @@ const App = () => {
       // onFilter: (value, record) => record.name.indexOf(value) === 0,
     },
     {
-      title: "Brand Details",
+      title: "YouTube",
       className: "brand-details-header",
       children: [
         {
-          title: "Brand Link",
+          title: "Subscribers",
           dataIndex: "street",
           key: "street",
           className: "brand-link-header",
@@ -348,7 +348,30 @@ const App = () => {
           render: (link) => <p className="single-line-text">{link}</p>,
         },
         {
-          title: "Brand Clicks",
+          title: "URL",
+          dataIndex: "key",
+          className: "brand-clicks-header",
+          key: "key",
+          width: 120,
+          render: (text) => (
+            <div>
+              <p className="single-line-text">{text}</p>
+            </div>
+          ),
+          // sorter: (a, b) => a.age - b.age,
+        },
+        {
+          title: "Influencer ₹",
+          dataIndex: "street",
+          key: "street",
+          className: "brand-link-header",
+          editable: true,
+          width: 100,
+          // sorter: (a, b) => a.age - b.age,
+          render: (link) => <p className="single-line-text">{link}</p>,
+        },
+        {
+          title: "Brand ₹",
           dataIndex: "key",
           className: "brand-clicks-header",
           key: "key",
@@ -363,17 +386,17 @@ const App = () => {
       ],
     },
     {
-      title: "Analysis",
+      title: "Instagram",
       className: "analysis-header main-analysis-header",
       children: [
         {
-          title: "YT Story",
-          key: "ytStory",
+          title: " ",
+          key: "blank",
           hidden: !ytStory,
           className: "analysis-header yt-story-header",
           children: [
             {
-              title: "Link",
+              title: "Followers",
               dataIndex: "ytStoryLink",
               key: "ytStoryLink",
               hidden: !ytStory,
@@ -383,7 +406,7 @@ const App = () => {
               render: (link) => <p className="single-line-text">{link}</p>,
             },
             {
-              title: "Likes",
+              title: "URL",
               dataIndex: "ytStoryLikes",
               key: "ytStoryLikes",
               hidden: !ytStory,
@@ -395,29 +418,16 @@ const App = () => {
                 </div>
               ),
             },
-            {
-              title: "Comments",
-              dataIndex: "ytStoryComments",
-              key: "ytStoryComments",
-              hidden: !ytStory,
-              width: 120,
-              className: "analysis-inner-header inner-header-right",
-              render: (text) => (
-                <div>
-                  <p className="single-line-text">{text}</p>
-                </div>
-              ),
-            },
           ],
         },
         {
-          title: "YT Video",
+          title: "Influencer ₹",
           key: "ytVideo",
           hidden: !ytVideo,
           className: "analysis-header yt-story-header",
           children: [
             {
-              title: "Link",
+              title: "Static",
               dataIndex: "ytVideoLink",
               key: "ytVideoLink",
               hidden: !ytVideo,
@@ -427,7 +437,7 @@ const App = () => {
               render: (link) => <p className="single-line-text">{link}</p>,
             },
             {
-              title: "Likes",
+              title: "Video",
               dataIndex: "ytVideoLikes",
               key: "ytVideoLikes",
               hidden: !ytVideo,
@@ -440,7 +450,33 @@ const App = () => {
               ),
             },
             {
-              title: "Comments",
+              title: "IGTV",
+              dataIndex: "ytVideoComments",
+              key: "ytVideoComments",
+              hidden: !ytVideo,
+              width: 120,
+              className: "analysis-inner-header inner-header-right",
+              render: (text) => (
+                <div>
+                  <p className="single-line-text">{text}</p>
+                </div>
+              ),
+            },
+            {
+              title: "Story",
+              dataIndex: "ytVideoComments",
+              key: "ytVideoComments",
+              hidden: !ytVideo,
+              width: 120,
+              className: "analysis-inner-header inner-header-right",
+              render: (text) => (
+                <div>
+                  <p className="single-line-text">{text}</p>
+                </div>
+              ),
+            },
+            {
+              title: "Reel",
               dataIndex: "ytVideoComments",
               key: "ytVideoComments",
               hidden: !ytVideo,
@@ -455,7 +491,7 @@ const App = () => {
           ],
         },
         {
-          title: "IG Static",
+          title: "Brand ₹",
           dataIndex: "companyAddress",
           key: "companyAddress",
           hidden: !igStatic,
@@ -491,142 +527,6 @@ const App = () => {
               hidden: !igStatic,
               width: 120,
               className: "analysis-inner-header inner-header-right",
-              render: (text) => (
-                <div>
-                  <p className="single-line-text">{text}</p>
-                </div>
-              ),
-            },
-          ],
-        },
-        {
-          title: "IG Video",
-          dataIndex: "companyName",
-          key: "companyName",
-          hidden: !igVideo,
-          className: "analysis-header ig-video-header",
-          children: [
-            {
-              title: "Link",
-              dataIndex: "igVideoLink",
-              key: "igStaticLink",
-              hidden: !igVideo,
-              editable: true,
-              width: 100,
-              className: "analysis-inner-header inner-header-left",
-              render: (link) => <p className="single-line-text">{link}</p>,
-            },
-            {
-              title: "Likes",
-              dataIndex: "number",
-              key: "igStaticLikes",
-              hidden: !igVideo,
-              width: 80,
-              className: "analysis-inner-header inner-header-center",
-              render: (text) => (
-                <div>
-                  <p className="single-line-text">{text}</p>
-                </div>
-              ),
-            },
-            {
-              title: "Comments",
-              dataIndex: "igVideoComments",
-              key: "igStaticComments",
-              hidden: !igVideo,
-              width: 120,
-              className: "analysis-inner-header inner-header-right",
-              render: (text) => (
-                <div>
-                  <p className="single-line-text">{text}</p>
-                </div>
-              ),
-            },
-          ],
-        },
-        {
-          title: "IGTV",
-          dataIndex: "companyName",
-          key: "companyName",
-          hidden: !igtv,
-          className: "analysis-header igtv-header",
-          children: [
-            {
-              title: "Link",
-              dataIndex: "igStaticLink",
-              key: "igStaticLink",
-              hidden: !igtv,
-              editable: true,
-              width: 100,
-              className: "analysis-inner-header inner-header-left",
-              render: (link) => <p className="single-line-text">{link}</p>,
-            },
-            {
-              title: "Likes",
-              dataIndex: "number",
-              key: "igStaticLikes",
-              hidden: !igtv,
-              width: 80,
-              className: "analysis-inner-header inner-header-center",
-              render: (text) => (
-                <div>
-                  <p className="single-line-text">{text}</p>
-                </div>
-              ),
-            },
-            {
-              title: "Comments",
-              dataIndex: "igtvComments",
-              key: "igStaticComments",
-              hidden: !igtv,
-              width: 120,
-              className: "analysis-inner-header inner-header-right",
-              render: (text) => (
-                <div>
-                  <p className="single-line-text">{text}</p>
-                </div>
-              ),
-            },
-          ],
-        },
-        {
-          title: "IG Reels",
-          dataIndex: "companyName",
-          key: "companyName",
-          hidden: !igReels,
-          className: "analysis-header ig-reels-header",
-          children: [
-            {
-              title: "Link",
-              dataIndex: "igStaticLink",
-              key: "igStaticLink",
-              hidden: !igReels,
-              editable: true,
-              width: 100,
-              className: "analysis-inner-header inner-header-left",
-              render: (link) => <p className="single-line-text">{link}</p>,
-            },
-            {
-              title: "Likes",
-              dataIndex: "number",
-              key: "igStaticLikes",
-              hidden: !igReels,
-              width: 80,
-              className: "analysis-inner-header inner-header-center",
-              render: (text) => (
-                <div>
-                  <p className="single-line-text">{text}</p>
-                </div>
-              ),
-            },
-            {
-              title: "Comments",
-              dataIndex: "igStaticComments",
-              key: "igStaticComments",
-              hidden: !igReels,
-              width: 120,
-              className:
-                "analysis-inner-header inner-header-right ig-reels-comments",
               render: (text) => (
                 <div>
                   <p className="single-line-text">{text}</p>
@@ -823,4 +723,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default CustomDraftTable;
