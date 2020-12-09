@@ -106,8 +106,9 @@ th.analysis-inner-header {
 .light-cell td div p,
 .dark-cell td div p {
   margin: 0 0 0 0 !important;
-  /* text-align: center !important;
-  width: 100% !important; */
+  /* text-align: center !important; */
+  width: 100% !important;
+  overflow: hidden;
 }
 th.brand-clicks-header {
   border-radius: 0 !important;
