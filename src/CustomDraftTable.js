@@ -145,6 +145,7 @@ const CustomDraftTable = () => {
         age: i + 1,
         igStaticLink: "-",
         street: "Lake Park",
+        igtv: "IGTV",
         building: "C",
         selected: i % 2 === 0 ? true : false,
         number: 2035 + i,
