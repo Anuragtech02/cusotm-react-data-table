@@ -111,6 +111,7 @@ const cols = [
   "igStatic",
   "igVideo",
   "igtv",
+  "igStory",
   "igReel",
 ];
 
@@ -126,16 +127,18 @@ const CustomDraftTable = () => {
   const [igVideo, setIgVideo] = useState(false);
   const [igtv, setIgtv] = useState(false);
   const [igReels, setIgReels] = useState(false);
+  const [igStory, setIgStory] = useState(false);
   const [ytStory, setYtStory] = useState(false);
   const [ytVideo, setYtVideo] = useState(false);
 
   const [isInstaPresent, setIsInstaPresent] = useState(false);
+  const [isYoutubePresent, setIsYoutubePresent] = useState(false);
 
   const [filteredColumns, setFilteredColumns] = useState([]);
 
   useEffect(() => {
     let temp = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 50; i++) {
       temp.push({
         key: i,
         name: "John Brown " + i,
@@ -165,9 +168,11 @@ const CustomDraftTable = () => {
       switch (item) {
         case "ytStory":
           setYtStory(true);
+          setIsYoutubePresent(true);
           break;
         case "ytVideo":
           setYtVideo(true);
+          setIsYoutubePresent(true);
           break;
         case "igStatic":
           setIgStatic(true);
@@ -183,6 +188,10 @@ const CustomDraftTable = () => {
           break;
         case "igReel":
           setIgReels(true);
+          setIsInstaPresent(true);
+          break;
+        case "igStory":
+          setIgStory(true);
           setIsInstaPresent(true);
           break;
         default:
@@ -316,6 +325,7 @@ const CustomDraftTable = () => {
     {
       title: "Name",
       dataIndex: "name",
+      hidden: false,
       key: "name",
       width: 200,
       ...getColumnSearchProps("name"),
@@ -335,6 +345,7 @@ const CustomDraftTable = () => {
     },
     {
       title: "YouTube",
+      hidden: !isYoutubePresent,
       className: "brand-details-header",
       children: [
         {
@@ -342,6 +353,7 @@ const CustomDraftTable = () => {
           dataIndex: "street",
           key: "street",
           className: "brand-link-header",
+          hidden: !isYoutubePresent,
           editable: true,
           width: 100,
           // sorter: (a, b) => a.age - b.age,
@@ -351,6 +363,7 @@ const CustomDraftTable = () => {
           title: "URL",
           dataIndex: "key",
           className: "brand-clicks-header",
+          hidden: !isYoutubePresent,
           key: "key",
           width: 120,
           render: (text) => (
@@ -364,7 +377,8 @@ const CustomDraftTable = () => {
           title: "Influencer ₹",
           dataIndex: "street",
           key: "street",
-          className: "brand-link-header",
+          className: "brand-clicks-header",
+          hidden: !isYoutubePresent,
           editable: true,
           width: 100,
           // sorter: (a, b) => a.age - b.age,
@@ -374,6 +388,7 @@ const CustomDraftTable = () => {
           title: "Brand ₹",
           dataIndex: "key",
           className: "brand-clicks-header",
+          hidden: !isYoutubePresent,
           key: "key",
           width: 120,
           render: (text) => (
@@ -387,19 +402,20 @@ const CustomDraftTable = () => {
     },
     {
       title: "Instagram",
+      hidden: !isInstaPresent,
       className: "analysis-header main-analysis-header",
       children: [
         {
           title: " ",
           key: "blank",
-          hidden: !ytStory,
+          hidden: !isInstaPresent,
           className: "analysis-header yt-story-header",
           children: [
             {
               title: "Followers",
-              dataIndex: "ytStoryLink",
-              key: "ytStoryLink",
-              hidden: !ytStory,
+              dataIndex: "igFollowers",
+              key: "igFollowers",
+              hidden: !isInstaPresent,
               editable: true,
               width: 100,
               className: "analysis-inner-header inner-header-left",
@@ -407,9 +423,9 @@ const CustomDraftTable = () => {
             },
             {
               title: "URL",
-              dataIndex: "ytStoryLikes",
-              key: "ytStoryLikes",
-              hidden: !ytStory,
+              dataIndex: "igUrl",
+              key: "igUrl",
+              hidden: !isInstaPresent,
               width: 80,
               className: "analysis-inner-header inner-header-center",
               render: (text) => (
@@ -422,15 +438,14 @@ const CustomDraftTable = () => {
         },
         {
           title: "Influencer ₹",
-          key: "ytVideo",
-          hidden: !ytVideo,
+          hidden: !isInstaPresent,
           className: "analysis-header yt-story-header",
           children: [
             {
               title: "Static",
-              dataIndex: "ytVideoLink",
-              key: "ytVideoLink",
-              hidden: !ytVideo,
+              dataIndex: "igStatic",
+              key: "igStatic",
+              hidden: !igStatic,
               editable: true,
               width: 100,
               className: "analysis-inner-header inner-header-left",
@@ -438,9 +453,9 @@ const CustomDraftTable = () => {
             },
             {
               title: "Video",
-              dataIndex: "ytVideoLikes",
-              key: "ytVideoLikes",
-              hidden: !ytVideo,
+              dataIndex: "igVideo",
+              key: "igVideo",
+              hidden: !igVideo,
               width: 80,
               className: "analysis-inner-header inner-header-center",
               render: (text) => (
@@ -451,9 +466,9 @@ const CustomDraftTable = () => {
             },
             {
               title: "IGTV",
-              dataIndex: "ytVideoComments",
-              key: "ytVideoComments",
-              hidden: !ytVideo,
+              dataIndex: "igtvInfluencer",
+              key: "igtvInfluencer",
+              hidden: !igtv,
               width: 120,
               className: "analysis-inner-header inner-header-right",
               render: (text) => (
@@ -464,9 +479,9 @@ const CustomDraftTable = () => {
             },
             {
               title: "Story",
-              dataIndex: "ytVideoComments",
-              key: "ytVideoComments",
-              hidden: !ytVideo,
+              dataIndex: "igStoryInfluencer",
+              key: "igStoryInfluencer",
+              hidden: !igStory,
               width: 120,
               className: "analysis-inner-header inner-header-right",
               render: (text) => (
@@ -477,9 +492,9 @@ const CustomDraftTable = () => {
             },
             {
               title: "Reel",
-              dataIndex: "ytVideoComments",
-              key: "ytVideoComments",
-              hidden: !ytVideo,
+              dataIndex: "igReelInfluencer",
+              key: "igReelInfluencer",
+              hidden: !igReels,
               width: 120,
               className: "analysis-inner-header inner-header-right",
               render: (text) => (
@@ -492,15 +507,14 @@ const CustomDraftTable = () => {
         },
         {
           title: "Brand ₹",
-          dataIndex: "companyAddress",
-          key: "companyAddress",
-          hidden: !igStatic,
+          key: "brand",
+          hidden: !isInstaPresent,
           className: "analysis-header ig-static-header",
           children: [
             {
-              title: "Link",
+              title: "Static",
               dataIndex: "igStaticLink",
-              // key: "igStaticLink",
+              key: "igStaticLink",
               hidden: !igStatic,
               editable: true,
               width: 100,
@@ -508,10 +522,10 @@ const CustomDraftTable = () => {
               render: (link) => <p className="single-line-text">{link}</p>,
             },
             {
-              title: "Likes",
-              dataIndex: "number",
-              // key: "igStaticLikes",
-              hidden: !igStatic,
+              title: "Video",
+              dataIndex: "igVideo",
+              key: "igVideo",
+              hidden: !igVideo,
               width: 80,
               className: "analysis-inner-header inner-header-center",
               render: (text) => (
@@ -521,10 +535,36 @@ const CustomDraftTable = () => {
               ),
             },
             {
-              title: "Comments",
-              dataIndex: "igStaticComments",
-              // key: "igStaticComments",
-              hidden: !igStatic,
+              title: "IGTV",
+              dataIndex: "igtv",
+              key: "igtv",
+              hidden: !igtv,
+              width: 120,
+              className: "analysis-inner-header inner-header-right",
+              render: (text) => (
+                <div>
+                  <p className="single-line-text">{text}</p>
+                </div>
+              ),
+            },
+            {
+              title: "Story",
+              dataIndex: "igStory",
+              key: "igStory",
+              hidden: !igStory,
+              width: 120,
+              className: "analysis-inner-header inner-header-right",
+              render: (text) => (
+                <div>
+                  <p className="single-line-text">{text}</p>
+                </div>
+              ),
+            },
+            {
+              title: "Reel",
+              dataIndex: "igReel",
+              key: "igReel",
+              hidden: !igReels,
               width: 120,
               className: "analysis-inner-header inner-header-right",
               render: (text) => (
@@ -571,13 +611,39 @@ const CustomDraftTable = () => {
 
   useEffect(() => {
     const filterColumns = () => {
-      let total = columnData;
+      let total = columnData.filter((iCol) => iCol.hidden === false);
       let temp = [];
       let tempCol = {};
-      columnData.forEach((col) => {
+      let innerTemp = [];
+      let innerTempCol = {};
+      total.forEach((col) => {
         if (col.children) {
           tempCol = col;
+          console.log(tempCol);
           temp = col.children.filter((item) => item.hidden === false);
+          col.children.forEach((innerChild) => {
+            if (innerChild.children) {
+              innerTempCol = innerChild;
+              innerTemp = innerChild.children.filter(
+                (innerItem) => innerItem.hidden === false
+              );
+              console.log(innerTemp);
+            }
+          });
+          // console.log({
+          //   loggin: temp,
+          //   tempCol,
+          //   somethng: "Something",
+          //   innerTempCol,
+          // });
+          // console.log(temp[temp.indexOf(innerTempCol)], "Hello");
+          if (
+            temp[temp.indexOf(innerTempCol)] &&
+            temp[temp.indexOf(innerTempCol)].children
+          ) {
+            // console.log(temp[temp.indexOf(innerTempCol)].children, "Children");
+            temp[temp.indexOf(innerTempCol)].children = innerTemp;
+          }
         }
       });
       total[columnData.indexOf(tempCol)] = { ...tempCol, children: temp };
@@ -585,7 +651,7 @@ const CustomDraftTable = () => {
     };
 
     setFilteredColumns(filterColumns());
-  }, [cols]);
+  }, []);
 
   // console.log(filterColumns());
 
