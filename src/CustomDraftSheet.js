@@ -12,6 +12,7 @@ import React, {
   createContext,
   useEffect,
 } from "react";
+import ExportExcel from "./ExportExcel.js";
 
 const EditableContext = createContext();
 
@@ -115,7 +116,7 @@ const cols = [
   "igReel",
 ];
 
-const CustomDraftTable = () => {
+const CustomDraftSheet = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [loading, setLoading] = useState(true);
@@ -162,9 +163,7 @@ const CustomDraftTable = () => {
       }
       setSelectedRowsDefault(tem);
     });
-  }, []);
 
-  useEffect(() => {
     cols.forEach((item) => {
       switch (item) {
         case "ytStory":
@@ -202,6 +201,8 @@ const CustomDraftTable = () => {
     setLoading(false);
   }, []);
 
+  // useEffect(() => {}, []);
+
   const searchInput = useRef(null);
 
   const rowSelection = {
@@ -213,6 +214,7 @@ const CustomDraftTable = () => {
       //   "selectedRows: ",
       //   selectedRows
       // );
+      console.log("Selected");
       setSelectedRowsDefault(selectedRowKeys);
     },
     getCheckboxProps: (record) => ({
@@ -348,56 +350,84 @@ const CustomDraftTable = () => {
       title: "YouTube",
       hidden: !isYoutubePresent,
       className: "brand-details-header",
+      filters: [
+        {
+          text: "Selected Influencers",
+          value: "selected",
+        },
+      ],
+      // specify the condition of filtering result
+      // here is that finding the name started with `value`
+      onFilter: (value, record) => {
+        // console.log({
+        //   record,
+        //   something:
+        //     record.key ===
+        //     selectedRowsDefault[selectedRowsDefault.indexOf(record.key)],
+        // });
+        return (
+          record.key ===
+          selectedRowsDefault[selectedRowsDefault.indexOf(record.key)]
+        );
+      },
       children: [
         {
-          title: "Subscribers",
-          dataIndex: "street",
-          key: "street",
-          className: "brand-link-header",
-          hidden: !isYoutubePresent,
-          editable: true,
-          width: 100,
-          // sorter: (a, b) => a.age - b.age,
-          render: (link) => <p className="single-line-text">{link}</p>,
-        },
-        {
-          title: "URL",
-          dataIndex: "key",
+          title: " ",
+          key: "blank-col",
           className: "brand-clicks-header",
           hidden: !isYoutubePresent,
-          key: "key",
-          width: 120,
-          render: (text) => (
-            <div>
-              <p className="single-line-text">{text}</p>
-            </div>
-          ),
-          // sorter: (a, b) => a.age - b.age,
-        },
-        {
-          title: "Influencer ₹",
-          dataIndex: "street",
-          key: "street",
-          className: "brand-clicks-header",
-          hidden: !isYoutubePresent,
-          editable: true,
-          width: 100,
-          // sorter: (a, b) => a.age - b.age,
-          render: (link) => <p className="single-line-text">{link}</p>,
-        },
-        {
-          title: "Brand ₹",
-          dataIndex: "key",
-          className: "brand-clicks-header",
-          hidden: !isYoutubePresent,
-          key: "key",
-          width: 120,
-          render: (text) => (
-            <div>
-              <p className="single-line-text">{text}</p>
-            </div>
-          ),
-          // sorter: (a, b) => a.age - b.age,
+          children: [
+            {
+              title: "Subscribers",
+              dataIndex: "street",
+              key: "street",
+              className: "brand-link-header",
+              hidden: !isYoutubePresent,
+              editable: true,
+              width: 100,
+              // sorter: (a, b) => a.age - b.age,
+              render: (link) => <p className="single-line-text">{link}</p>,
+            },
+            {
+              title: "URL",
+              dataIndex: "key",
+              className: "brand-clicks-header",
+              hidden: !isYoutubePresent,
+              key: "key",
+              width: 120,
+              render: (text) => (
+                <div>
+                  <p className="single-line-text">{text}</p>
+                </div>
+              ),
+              // sorter: (a, b) => a.age - b.age,
+            },
+            {
+              title: "Influencer ₹",
+              dataIndex: "street",
+              key: "street",
+              className: "brand-clicks-header",
+              hidden: !isYoutubePresent,
+              editable: true,
+              width: 100,
+              // sorter: (a, b) => a.age - b.age,
+              render: (link) => <p className="single-line-text">{link}</p>,
+            },
+            {
+              title: "Brand ₹",
+              dataIndex: "key",
+              className: "brand-clicks-header",
+              hidden: !isYoutubePresent,
+              key: "key",
+              width: 120,
+              render: (text) => (
+                <div>
+                  <p className="single-line-text">{text}</p>
+                </div>
+              ),
+              // sorter: (a, b) => a.age - b.age,
+            },
+          ],
         },
       ],
     },
@@ -444,8 +474,8 @@ const CustomDraftTable = () => {
           children: [
             {
               title: "Static",
-              dataIndex: "igStatic",
-              key: "igStatic",
+              dataIndex: "igStaticLink",
+              key: "igStaticLink",
               hidden: !igStatic,
               editable: true,
               width: 100,
@@ -467,8 +497,8 @@ const CustomDraftTable = () => {
             },
             {
               title: "IGTV",
-              dataIndex: "igtvInfluencer",
-              key: "igtvInfluencer",
+              dataIndex: "igtv",
+              key: "igtv",
               hidden: !igtv,
               width: 120,
               className: "analysis-inner-header inner-header-right",
@@ -480,8 +510,8 @@ const CustomDraftTable = () => {
             },
             {
               title: "Story",
-              dataIndex: "igStoryInfluencer",
-              key: "igStoryInfluencer",
+              dataIndex: "igStory",
+              key: "igStory",
               hidden: !igStory,
               width: 120,
               className: "analysis-inner-header inner-header-right",
@@ -493,8 +523,8 @@ const CustomDraftTable = () => {
             },
             {
               title: "Reel",
-              dataIndex: "igReelInfluencer",
-              key: "igReelInfluencer",
+              dataIndex: "igReel",
+              key: "igReel",
               hidden: !igReels,
               width: 120,
               className: "analysis-inner-header inner-header-right",
@@ -610,49 +640,45 @@ const CustomDraftTable = () => {
 
   // console.log(filteredColumns);
 
-  useEffect(() => {
-    const filterColumns = () => {
-      let total = columnData.filter((iCol) => iCol.hidden === false);
-      let temp = [];
-      let tempCol = {};
-      let innerTemp = [];
-      let innerTempCol = {};
-      total.forEach((col) => {
-        if (col.children) {
-          tempCol = col;
-          console.log(tempCol);
-          temp = col.children.filter((item) => item.hidden === false);
-          col.children.forEach((innerChild) => {
-            if (innerChild.children) {
-              innerTempCol = innerChild;
-              innerTemp = innerChild.children.filter(
-                (innerItem) => innerItem.hidden === false
-              );
-              console.log(innerTemp);
-            }
-          });
-          // console.log({
-          //   loggin: temp,
-          //   tempCol,
-          //   somethng: "Something",
-          //   innerTempCol,
-          // });
-          // console.log(temp[temp.indexOf(innerTempCol)], "Hello");
-          if (
-            temp[temp.indexOf(innerTempCol)] &&
-            temp[temp.indexOf(innerTempCol)].children
-          ) {
-            // console.log(temp[temp.indexOf(innerTempCol)].children, "Children");
-            temp[temp.indexOf(innerTempCol)].children = innerTemp;
+  const filterColumns = () => {
+    let total = columnData.filter((iCol) => iCol.hidden === false);
+    let temp = [];
+    let tempCol = {};
+    let innerTemp = [];
+    let innerTempCol = {};
+    total.forEach((col) => {
+      if (col.children) {
+        tempCol = col;
+        console.log(tempCol);
+        temp = col.children.filter((item) => item.hidden !== true);
+        col.children.forEach((innerChild) => {
+          if (innerChild.children) {
+            innerTempCol = innerChild;
+            innerTemp = innerChild.children.filter(
+              (innerItem) => innerItem.hidden === false
+            );
+            console.log(innerTemp);
           }
+        });
+        // console.log({
+        //   loggin: temp,
+        //   tempCol,
+        //   somethng: "Something",
+        //   innerTempCol,
+        // });
+        // console.log(temp[temp.indexOf(innerTempCol)], "Hello");
+        if (
+          temp[temp.indexOf(innerTempCol)] &&
+          temp[temp.indexOf(innerTempCol)].children
+        ) {
+          // console.log(temp[temp.indexOf(innerTempCol)].children, "Children");
+          temp[temp.indexOf(innerTempCol)].children = innerTemp;
         }
-      });
-      total[columnData.indexOf(tempCol)] = { ...tempCol, children: temp };
-      return total;
-    };
-
-    setFilteredColumns(filterColumns());
-  }, []);
+      }
+    });
+    total[columnData.indexOf(tempCol)] = { ...tempCol, children: temp };
+    return total;
+  };
 
   // console.log(filterColumns());
 
@@ -674,7 +700,7 @@ const CustomDraftTable = () => {
 
   // console.log(filteredColumns);
 
-  const columns = filteredColumns.map((col) => {
+  const columns = filterColumns().map((col) => {
     let temp = [];
     let innerChildren = [];
     if (!col.editable) {
@@ -757,6 +783,10 @@ const CustomDraftTable = () => {
     };
   });
 
+  // const onClickExcel = () => {
+  //   ExportExcel(columns, data, "ExportedExcel");
+  // };
+
   return (
     <>
       <Table
@@ -785,9 +815,10 @@ const CustomDraftTable = () => {
         // bordered
         size="middle"
         scroll={{ x: "calc(700px + 50%)", y: "70vh" }}
+        // footer={() => <Button onClick={onClickExcel}>Export Excel</Button>}
       />
     </>
   );
 };
 
-export default CustomDraftTable;
+export default CustomDraftSheet;

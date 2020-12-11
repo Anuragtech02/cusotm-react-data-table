@@ -113,6 +113,24 @@ const cols = [
   "igtv",
   "igReel",
 ];
+let temp = [];
+for (let i = 0; i < 100; i++) {
+  temp.push({
+    key: i,
+    name: "John Brown " + i,
+    age: i + 1,
+    igStaticLink: "-",
+    street: "Lake Park",
+    igtv: "IGTV",
+    igStory: "IGTV",
+    building: "C",
+    selected: i === 2 || i === 4 || i === 6,
+    number: 2035 + i,
+    companyAddress: "Lake Street 42",
+    companyName: "SoftLake Co",
+    gender: "M",
+  });
+}
 
 const App = () => {
   const [searchText, setSearchText] = useState("");
@@ -134,22 +152,6 @@ const App = () => {
   const [filteredColumns, setFilteredColumns] = useState([]);
 
   useEffect(() => {
-    let temp = [];
-    for (let i = 0; i < 100; i++) {
-      temp.push({
-        key: i,
-        name: "John Brown " + i,
-        age: i + 1,
-        igStaticLink: "-",
-        street: "Lake Park",
-        building: "C",
-        selected: i % 2 === 0 ? true : false,
-        number: 2035 + i,
-        companyAddress: "Lake Street 42",
-        companyName: "SoftLake Co",
-        gender: "M",
-      });
-    }
     setData(temp);
     let tem = [];
     temp.forEach((item) => {
@@ -158,9 +160,15 @@ const App = () => {
       }
       setSelectedRowsDefault(tem);
     });
-  }, []);
-
-  useEffect(() => {
+    // let selectedItems = [];
+    // tem.forEach((item) => {
+    //   selectedItems.push(temp[item]);
+    // });
+    // const filteredSelected = data.filter(
+    //   (item) => !selectedItems.includes(item)
+    // );
+    // // setData(...tem, ...filteredSelected);
+    // console.log({ tem, filteredSelected });
     cols.forEach((item) => {
       switch (item) {
         case "ytStory":
@@ -189,8 +197,14 @@ const App = () => {
           break;
       }
     });
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   }, []);
+
+  // useEffect(() => {
+
+  // }, []);
 
   const searchInput = useRef(null);
 
@@ -203,6 +217,7 @@ const App = () => {
       //   "selectedRows: ",
       //   selectedRows
       // );
+      console.log("Selected Row");
       setSelectedRowsDefault(selectedRowKeys);
     },
     getCheckboxProps: (record) => ({
@@ -321,6 +336,7 @@ const App = () => {
       ...getColumnSearchProps("name"),
       fixed: "left",
       className: "name-header",
+      // sorter: (a, b) => a.key - b.key,
       // filters: [
       //   {
       //     text: "Joe",
@@ -336,6 +352,26 @@ const App = () => {
     {
       title: "Brand Details",
       className: "brand-details-header",
+      filters: [
+        {
+          text: "Selected Influencers",
+          value: "selected",
+        },
+      ],
+      // specify the condition of filtering result
+      // here is that finding the name started with `value`
+      onFilter: (value, record) => {
+        // console.log({
+        //   record,
+        //   something:
+        //     record.key ===
+        //     selectedRowsDefault[selectedRowsDefault.indexOf(record.key)],
+        // });
+        return (
+          record.key ===
+          selectedRowsDefault[selectedRowsDefault.indexOf(record.key)]
+        );
+      },
       children: [
         {
           title: "Brand Link",
@@ -349,9 +385,9 @@ const App = () => {
         },
         {
           title: "Brand Clicks",
-          dataIndex: "key",
+          dataIndex: "number",
           className: "brand-clicks-header",
-          key: "key",
+          key: "brandClick",
           width: 120,
           render: (text) => (
             <div>
@@ -364,18 +400,19 @@ const App = () => {
     },
     {
       title: "Analysis",
+      key: "analysis",
       className: "analysis-header main-analysis-header",
       children: [
         {
           title: "YT Story",
-          key: "ytStory",
+          key: "ytStoryAnalysis",
           hidden: !ytStory,
           className: "analysis-header yt-story-header",
           children: [
             {
               title: "Link",
-              dataIndex: "ytStoryLink",
-              key: "ytStoryLink",
+              dataIndex: "ytStoryLinkAnalysis",
+              key: "ytStoryLinkAnalysis",
               hidden: !ytStory,
               editable: true,
               width: 100,
@@ -384,8 +421,8 @@ const App = () => {
             },
             {
               title: "Likes",
-              dataIndex: "ytStoryLikes",
-              key: "ytStoryLikes",
+              dataIndex: "ytStoryLikesAnalysis",
+              key: "ytStoryLikesAnalysis",
               hidden: !ytStory,
               width: 80,
               className: "analysis-inner-header inner-header-center",
@@ -397,8 +434,8 @@ const App = () => {
             },
             {
               title: "Comments",
-              dataIndex: "ytStoryComments",
-              key: "ytStoryComments",
+              dataIndex: "ytStoryCommentsAnalysis",
+              key: "ytStoryCommentsAnalysis",
               hidden: !ytStory,
               width: 120,
               className: "analysis-inner-header inner-header-right",
@@ -412,15 +449,15 @@ const App = () => {
         },
         {
           title: "YT Video",
-          key: "ytVideo",
+          key: "ytVideoAnalysis",
           hidden: !ytVideo,
           className: "analysis-header yt-story-header",
           children: [
             {
               title: "Link",
-              dataIndex: "ytVideoLink",
-              key: "ytVideoLink",
-              hidden: !ytVideo,
+              dataIndex: "ytVideoLinkAnalysis",
+              key: "ytVideoLinkAnalysis",
+              // hidden: !ytVideo,
               editable: true,
               width: 100,
               className: "analysis-inner-header inner-header-left",
@@ -428,9 +465,9 @@ const App = () => {
             },
             {
               title: "Likes",
-              dataIndex: "ytVideoLikes",
-              key: "ytVideoLikes",
-              hidden: !ytVideo,
+              dataIndex: "ytVideoLikesAnalysis",
+              key: "ytVideoLikesAnalysis",
+              // hidden: !ytVideo,
               width: 80,
               className: "analysis-inner-header inner-header-center",
               render: (text) => (
@@ -441,9 +478,9 @@ const App = () => {
             },
             {
               title: "Comments",
-              dataIndex: "ytVideoComments",
-              key: "ytVideoComments",
-              hidden: !ytVideo,
+              dataIndex: "ytVideoCommentsAnalysis",
+              key: "ytVideoCommentsAnalysis",
+              // hidden: !ytVideo,
               width: 120,
               className: "analysis-inner-header inner-header-right",
               render: (text) => (
@@ -456,16 +493,16 @@ const App = () => {
         },
         {
           title: "IG Static",
-          dataIndex: "companyAddress",
-          key: "companyAddress",
+          // dataIndex: "companyAddress",
+          key: "ig static",
           hidden: !igStatic,
           className: "analysis-header ig-static-header",
           children: [
             {
               title: "Link",
-              dataIndex: "igStaticLink",
-              // key: "igStaticLink",
-              hidden: !igStatic,
+              dataIndex: "igStaticLinkAnalysis",
+              key: "igStaticLinkAnalysis",
+              // hidden: !igStatic,
               editable: true,
               width: 100,
               className: "analysis-inner-header inner-header-left",
@@ -474,8 +511,8 @@ const App = () => {
             {
               title: "Likes",
               dataIndex: "number",
-              // key: "igStaticLikes",
-              hidden: !igStatic,
+              key: "igStaticLikes",
+              // hidden: !igStatic,
               width: 80,
               className: "analysis-inner-header inner-header-center",
               render: (text) => (
@@ -487,8 +524,8 @@ const App = () => {
             {
               title: "Comments",
               dataIndex: "igStaticComments",
-              // key: "igStaticComments",
-              hidden: !igStatic,
+              key: "igStaticComments",
+              // hidden: !igStatic,
               width: 120,
               className: "analysis-inner-header inner-header-right",
               render: (text) => (
@@ -501,16 +538,15 @@ const App = () => {
         },
         {
           title: "IG Video",
-          dataIndex: "companyName",
-          key: "companyName",
+          key: "ig video",
           hidden: !igVideo,
           className: "analysis-header ig-video-header",
           children: [
             {
               title: "Link",
               dataIndex: "igVideoLink",
-              key: "igStaticLink",
-              hidden: !igVideo,
+              key: "igVideoLinkAnalysis",
+              // hidden: !igVideo,
               editable: true,
               width: 100,
               className: "analysis-inner-header inner-header-left",
@@ -519,8 +555,8 @@ const App = () => {
             {
               title: "Likes",
               dataIndex: "number",
-              key: "igStaticLikes",
-              hidden: !igVideo,
+              key: "igStaticLikesAnalysis",
+              // hidden: !igVideo,
               width: 80,
               className: "analysis-inner-header inner-header-center",
               render: (text) => (
@@ -531,9 +567,9 @@ const App = () => {
             },
             {
               title: "Comments",
-              dataIndex: "igVideoComments",
-              key: "igStaticComments",
-              hidden: !igVideo,
+              dataIndex: "igVideoCommentsAnalysis",
+              key: "igVideoCommentsAnalysis",
+              // hidden: !igVideo,
               width: 120,
               className: "analysis-inner-header inner-header-right",
               render: (text) => (
@@ -547,15 +583,15 @@ const App = () => {
         {
           title: "IGTV",
           dataIndex: "companyName",
-          key: "companyName",
+          key: "igtvAnalysis",
           hidden: !igtv,
           className: "analysis-header igtv-header",
           children: [
             {
               title: "Link",
               dataIndex: "igStaticLink",
-              key: "igStaticLink",
-              hidden: !igtv,
+              key: "igtvLinkAnalysis",
+              // hidden: !igtv,
               editable: true,
               width: 100,
               className: "analysis-inner-header inner-header-left",
@@ -564,8 +600,8 @@ const App = () => {
             {
               title: "Likes",
               dataIndex: "number",
-              key: "igStaticLikes",
-              hidden: !igtv,
+              key: "igtvLikesAnalysis",
+              // hidden: !igtv,
               width: 80,
               className: "analysis-inner-header inner-header-center",
               render: (text) => (
@@ -576,9 +612,9 @@ const App = () => {
             },
             {
               title: "Comments",
-              dataIndex: "igtvComments",
-              key: "igStaticComments",
-              hidden: !igtv,
+              dataIndex: "igtvCommentsAnalysis",
+              key: "igtvCommentsAnalysis",
+              // hidden: !igtv,
               width: 120,
               className: "analysis-inner-header inner-header-right",
               render: (text) => (
@@ -591,16 +627,15 @@ const App = () => {
         },
         {
           title: "IG Reels",
-          dataIndex: "companyName",
-          key: "companyName",
+          key: "ig reels",
           hidden: !igReels,
           className: "analysis-header ig-reels-header",
           children: [
             {
               title: "Link",
-              dataIndex: "igStaticLink",
-              key: "igStaticLink",
-              hidden: !igReels,
+              dataIndex: "igStaticLinkAnalysis",
+              key: "igStaticLinkAnalysis",
+              // hidden: !igReels,
               editable: true,
               width: 100,
               className: "analysis-inner-header inner-header-left",
@@ -609,8 +644,8 @@ const App = () => {
             {
               title: "Likes",
               dataIndex: "number",
-              key: "igStaticLikes",
-              hidden: !igReels,
+              key: "igStaticLikesAnalysis",
+              // hidden: !igReels,
               width: 80,
               className: "analysis-inner-header inner-header-center",
               render: (text) => (
@@ -621,9 +656,9 @@ const App = () => {
             },
             {
               title: "Comments",
-              dataIndex: "igStaticComments",
-              key: "igStaticComments",
-              hidden: !igReels,
+              dataIndex: "igStaticCommentsAnalysis",
+              key: "igStaticCommentsAnalysis",
+              // hidden: !igReels,
               width: 120,
               className:
                 "analysis-inner-header inner-header-right ig-reels-comments",
@@ -669,23 +704,9 @@ const App = () => {
 
   // console.log(filteredColumns);
 
-  useEffect(() => {
-    const filterColumns = () => {
-      let total = columnData;
-      let temp = [];
-      let tempCol = {};
-      columnData.forEach((col) => {
-        if (col.children) {
-          tempCol = col;
-          temp = col.children.filter((item) => item.hidden === false);
-        }
-      });
-      total[columnData.indexOf(tempCol)] = { ...tempCol, children: temp };
-      return total;
-    };
+  // useEffect(() => {
 
-    setFilteredColumns(filterColumns());
-  }, [cols]);
+  // }, [cols]);
 
   // console.log(filterColumns());
 
@@ -707,7 +728,23 @@ const App = () => {
 
   // console.log(filteredColumns);
 
-  const columns = filteredColumns.map((col) => {
+  const filterColumns = () => {
+    let total = columnData;
+    let temp = [];
+    let tempCol = {};
+    columnData.forEach((col) => {
+      if (col.children) {
+        tempCol = col;
+        temp = col.children.filter((item) => item.hidden === false);
+      }
+    });
+    total[columnData.indexOf(tempCol)] = { ...tempCol, children: temp };
+    return total;
+  };
+
+  // setFilteredColumns(filterColumns());
+
+  const columns = filterColumns().map((col) => {
     let temp = [];
     let innerChildren = [];
     if (!col.editable) {

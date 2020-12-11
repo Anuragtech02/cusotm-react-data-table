@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import CustomDraftTable from "./CustomDraftTable";
+import CustomDraftTable from "./CustomDraftSheet";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
